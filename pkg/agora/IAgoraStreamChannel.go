@@ -297,12 +297,11 @@ func (this_ *IStreamChannel) Join(options *JoinChannelOptions, requestId *uint64
 * - 0: Success.
 * - < 0: Failure.
  */
-func (this_ *IStreamChannel) RenewToken(token string) int {
+func (this_ *IStreamChannel) RenewToken(token string, requestId *uint64) int {
 	cToken := C.CString(token)
-	var requestId uint64
 	C.agora_rtm_stream_channel_renew_token(unsafe.Pointer(this_),
 		cToken,
-		(*C.uint64_t)(&requestId),
+		(*C.uint64_t)(requestId),
 	)
 	C.free(unsafe.Pointer(cToken))
 	return 0
@@ -363,16 +362,15 @@ func (this_ *IStreamChannel) JoinTopic(topic string, options *JoinTopicOptions, 
 * - 0: Success.
 * - < 0: Failure.
  */
-func (this_ *IStreamChannel) PublishTopicMessage(topic string, message string, length uint, option *TopicMessageOptions) int {
+func (this_ *IStreamChannel) PublishTopicMessage(topic string, message string, length uint, option *TopicMessageOptions, requestId *uint64) int {
 	cTopic := C.CString(topic)
 	cMessage := C.CString(message)
-	var requestId uint64
 	C.agora_rtm_stream_channel_publish_topic_message(unsafe.Pointer(this_),
 		cTopic,
 		cMessage,
 		C.size_t(length),
 		(*C.struct_C_TopicMessageOptions)(option),
-		(*C.uint64_t)(&requestId),
+		(*C.uint64_t)(requestId),
 	)
 	C.free(unsafe.Pointer(cTopic))
 	C.free(unsafe.Pointer(cMessage))
@@ -425,13 +423,12 @@ func (this_ *IStreamChannel) SubscribeTopic(topic string, options *TopicOptions,
 * - 0: Success.
 * - < 0: Failure.
  */
-func (this_ *IStreamChannel) UnsubscribeTopic(topic string, options *TopicOptions) int {
+func (this_ *IStreamChannel) UnsubscribeTopic(topic string, options *TopicOptions, requestId *uint64) int {
 	cTopic := C.CString(topic)
-	var requestId uint64
 	C.agora_rtm_stream_channel_unsubscribe_topic(unsafe.Pointer(this_),
 		cTopic,
 		(*C.struct_C_TopicOptions)(options),
-		(*C.uint64_t)(&requestId),
+		(*C.uint64_t)(requestId),
 	)
 	C.free(unsafe.Pointer(cTopic))
 	return 0
@@ -446,12 +443,11 @@ func (this_ *IStreamChannel) UnsubscribeTopic(topic string, options *TopicOption
 * - 0: Success.
 * - < 0: Failure.
  */
-func (this_ *IStreamChannel) GetSubscribedUserList(topic string) int {
+func (this_ *IStreamChannel) GetSubscribedUserList(topic string, requestId *uint64) int {
 	cTopic := C.CString(topic)
-	var requestId uint64
 	C.agora_rtm_stream_channel_get_subscribed_user_list(unsafe.Pointer(this_),
 		cTopic,
-		(*C.uint64_t)(&requestId),
+		(*C.uint64_t)(requestId),
 	)
 	C.free(unsafe.Pointer(cTopic))
 	return 0

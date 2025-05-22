@@ -16,8 +16,10 @@ package agora
 
 */
 import "C"
-import "unsafe"
-import "fmt"
+import (
+	"fmt"
+	"unsafe"
+)
 
 // #region agora
 // #region agora::rtm
@@ -454,12 +456,11 @@ func (this_ *IRtmStorage) SubscribeUserMetadata(userId string, requestId *uint64
  * - 0: Success.
  * - < 0: Failure.
  */
-func (this_ *IRtmStorage) UnsubscribeUserMetadata(userId string) {
+func (this_ *IRtmStorage) UnsubscribeUserMetadata(userId string, requestId *uint64) {
 	cUserId := C.CString(userId)
-	var requestId uint64
 	C.agora_rtm_storage_unsubscribe_user_metadata(unsafe.Pointer(this_.ptr),
 		cUserId,
-		(*C.uint64_t)(&requestId),
+		(*C.uint64_t)(requestId),
 	)
 	C.free(unsafe.Pointer(cUserId))
 }

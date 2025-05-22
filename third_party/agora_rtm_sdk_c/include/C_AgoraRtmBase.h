@@ -93,6 +93,24 @@ enum C_RTM_LINK_OPERATION {
 };
 
 /**
+ * Rtm service type.
+ */
+enum C_RTM_SERVICE_TYPE {
+    /**
+     * The type of rtm service not specified.
+     */
+    RTM_SERVICE_TYPE_NONE = 0x00000000,
+    /**
+     * The basic functionality of rtm service.
+     */
+    RTM_SERVICE_TYPE_MESSAGE = 0x00000001,
+    /**
+     * The advanced functionality of rtm service.
+     */
+    RTM_SERVICE_TYPE_STREAM = 0x00000002,
+};
+
+/**
  * Rtm link state change reason.
  */
 enum C_RTM_LINK_STATE_CHANGE_REASON {
@@ -262,24 +280,6 @@ enum C_RTM_PROTOCOL_TYPE {
      * Use TCP only.
      */
     RTM_PROTOCOL_TYPE_TCP_ONLY = 1,
-};
-
-/**
- * Rtm service type.
- */
-enum C_RTM_SERVICE_TYPE {
-    /**
-     * The type of rtm service not specified.
-     */
-    RTM_SERVICE_TYPE_NONE = 0x00000000,
-    /**
-     * The basic functionality of rtm service.
-     */
-    RTM_SERVICE_TYPE_MESSAGE = 0x00000001,
-    /**
-     * The advanced functionality of rtm service.
-     */
-    RTM_SERVICE_TYPE_STREAM = 0x00000002,
 };
 
 /**
@@ -458,6 +458,26 @@ enum C_RTM_ERROR_CODE
    * -10021: The operation is too frequent.
    */
   RTM_ERROR_OPERATION_RATE_EXCEED_LIMITATION = -10021,
+  /**
+   * -10022: The service is not configured in private config mode.
+   */
+  RTM_ERROR_SERVICE_NOT_SUPPORTED = -10022,
+  /**
+   * -10023: This login operation stopped by a new login operation or logout operation.
+   */
+  RTM_ERROR_LOGIN_CANCELED = -10023,
+  /**
+   * -10024: The private config is invalid, set private config should both set serviceType and accessPointHosts.
+   */
+  RTM_ERROR_INVALID_PRIVATE_CONFIG = -10024,
+  /**
+   * -10025: Perform operation failed due to RTM service is not connected.
+   */
+  RTM_ERROR_NOT_CONNECTED = -10025,
+  /**
+   * -10026: Renew token timeout.
+   */
+  RTM_ERROR_RENEW_TOKEN_TIMEOUT = -10026,
 
   /**
    * -11001 ~ -12000 : reserved for channel error.
@@ -592,6 +612,22 @@ enum C_RTM_ERROR_CODE
    * -11033: The destination user of publish message is offline.
    */
   RTM_ERROR_CHANNEL_RECEIVER_OFFLINE = -11033,
+    /**
+   * -11034: The channel join operation is canceled.
+   */
+  RTM_ERROR_CHANNEL_JOIN_CANCELED = -11034,
+  /**
+   * -11035: The message receiver is offline but the message store in history succeeded.
+   */
+  RTM_ERROR_CHANNEL_RECEIVER_OFFLINE_BUT_STORE_SUCCEEDED = -11035,
+  /**
+   * -11036: The message receiver is offline and the message store in history failed.
+   */
+  RTM_ERROR_CHANNEL_RECEIVER_OFFLINE_AND_STORE_FAILED = -11036,
+  /**
+   * -11037: The message delivered successfully but store in history failed.
+   */
+  RTM_ERROR_CHANNEL_MESSAGE_DELIVERED_BUT_STORE_FAILED = -11037,
 
   /**
    * -12001 ~ -13000 : reserved for storage error.
@@ -762,6 +798,28 @@ enum C_RTM_ERROR_CODE
    * -14009: The lock service is not available.
    */
   RTM_ERROR_LOCK_NOT_AVAILABLE = -14009,
+
+  /**
+   * -15001 ~ -16000 : reserved for history error.
+   * -15001: The history operation failed.
+   */
+  RTM_ERROR_HISTORY_OPERATION_FAILED = -15001,
+  /**
+   * -15002: The timestamp is invalid.
+   */
+  RTM_ERROR_HISTORY_INVALID_TIMESTAMP = -15002,
+  /**
+   * -15003: The history operation timeout.
+   */
+  RTM_ERROR_HISTORY_OPERATION_TIMEOUT = -15003,
+  /**
+   * -15004: The history operation is not permitted.
+   */
+  RTM_ERROR_HISTORY_OPERATION_NOT_PERMITTED = -15004,
+  /**
+   * -15005: The history service not available.
+   */
+  RTM_ERROR_HISTORY_NOT_AVAILABLE = -15005,
 };
 
 /**
@@ -888,13 +946,17 @@ enum C_RTM_CONNECTION_CHANGE_REASON
    */
   RTM_CONNECTION_CHANGED_LICENSE_VALIDATION_FAILURE = 21,
   /**
-   * 22: The connection is failed due to user vid not support stream channel.
+   * 22: The connection is failed due to certification verify failure.
    */
-  RTM_CONNECTION_CHANGED_STREAM_CHANNEL_NOT_AVAILABLE = 22,
+  RTM_CONNECTION_CHANGED_CERTIFICATION_VERIFY_FAILURE = 22,
   /**
-   * 23: The connection is failed due to token and appid inconsistent.
+   * 23: The connection is failed due to user vid not support stream channel.
    */
-  RTM_CONNECTION_CHANGED_INCONSISTENT_APPID = 23,
+  RTM_CONNECTION_CHANGED_STREAM_CHANNEL_NOT_AVAILABLE = 23,
+  /**
+   * 24: The connection is failed due to token and appid inconsistent.
+   */
+  RTM_CONNECTION_CHANGED_INCONSISTENT_APPID = 24,
   /**
    * 10001: The connection of rtm edge service has been successfully established.
    */

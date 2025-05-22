@@ -1669,12 +1669,11 @@ func (this_ *IRtmClient) Release() int {
  * - 0: Success.
  * - < 0: Failure.
  */
-func (this_ *IRtmClient) Login(token string) int {
-	var requestId uint64
+func (this_ *IRtmClient) Login(token string, requestId *uint64) int {
 	cToken := C.CString(token)
 	ret := int(C.agora_rtm_client_login(unsafe.Pointer(this_),
 		cToken,
-		(*C.uint64_t)(unsafe.Pointer(&requestId)),
+		(*C.uint64_t)(requestId),
 	))
 	C.free(unsafe.Pointer(cToken))
 	return int(ret)
@@ -1687,10 +1686,9 @@ func (this_ *IRtmClient) Login(token string) int {
  * - 0: Success.
  * - < 0: Failure.
  */
-func (this_ *IRtmClient) Logout() int {
-	var requestId uint64
+func (this_ *IRtmClient) Logout(requestId *uint64) int {
 	return int(C.agora_rtm_client_logout(unsafe.Pointer(this_),
-		(*C.uint64_t)(unsafe.Pointer(&requestId)),
+		(*C.uint64_t)(requestId),
 	))
 }
 
@@ -1732,12 +1730,11 @@ func (this_ *IRtmClient) GetPresence() *IRtmPresence {
  * - 0: Success.
  * - < 0: Failure.
  */
-func (this_ *IRtmClient) RenewToken(token string) int {
+func (this_ *IRtmClient) RenewToken(token string, requestId *uint64) int {
 	cToken := C.CString(token)
-	var requestId uint64
 	ret := int(C.agora_rtm_client_renew_token(unsafe.Pointer(this_),
 		cToken,
-		(*C.uint64_t)(unsafe.Pointer(&requestId)),
+		(*C.uint64_t)(requestId),
 	))
 	C.free(unsafe.Pointer(cToken))
 	return int(ret)
@@ -1798,12 +1795,11 @@ func (this_ *IRtmClient) Subscribe(channelName string, option *SubscribeOptions,
  * - 0: Success.
  * - < 0: Failure.
  */
-func (this_ *IRtmClient) Unsubscribe(channelName string) int {
+func (this_ *IRtmClient) Unsubscribe(channelName string, requestId *uint64) int {
 	cChannelName := C.CString(channelName)
-	var requestId uint64
 	ret := int(C.agora_rtm_client_unsubscribe(unsafe.Pointer(this_),
 		cChannelName,
-		(*C.uint64_t)(unsafe.Pointer(&requestId)),
+		(*C.uint64_t)(requestId),
 	))
 	C.free(unsafe.Pointer(cChannelName))
 	return int(ret)
